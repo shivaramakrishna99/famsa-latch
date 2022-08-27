@@ -1,0 +1,69 @@
+Step 1/9 : FROM 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base:6839-main
+
+
+ ---> 12b193ffea17
+
+Step 2/9 : RUN apt-get install -y git
+
+
+ ---> Using cache
+
+ ---> 47b79cddb814
+
+Step 3/9 : RUN git clone https://github.com/refresh-bio/FAMSA.git &&    cd FAMSA && make
+
+
+ ---> Using cache
+
+ ---> 0f191d492f89
+
+Step 4/9 : RUN ./FAMSA/famsa -help
+
+
+ ---> Using cache
+
+ ---> b1fad4be12c1
+
+Step 5/9 : RUN python3 -m pip install --upgrade latch
+
+
+ ---> Using cache
+
+ ---> 400306b57905
+
+Step 6/9 : COPY wf /root/wf
+
+
+ ---> 79f1358fa4ab
+
+Step 7/9 : ARG tag
+
+
+ ---> [Warning] The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+
+ ---> Running in eac56581aed7
+
+ ---> fb9fc041ae39
+
+Step 8/9 : ENV FLYTE_INTERNAL_IMAGE $tag
+
+
+ ---> [Warning] The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+
+ ---> Running in b238edda084d
+
+ ---> 353f266a4818
+
+Step 9/9 : WORKDIR /root
+
+
+ ---> [Warning] The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+
+ ---> Running in e505cbffd532
+
+ ---> 4062bc26441e
+
+Successfully built 4062bc26441e
+
+Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/3701_famsa-latch:0.0.0-ada8f4
+
