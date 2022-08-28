@@ -42,37 +42,21 @@ def famsa_alignment(
     ) -> LatchFile:
 
     input_path = Path(input).resolve()
-
-    if medoidTree == True and medoidThreshold is not None:
-        medoidOption = '-medoidTree' + '' + str(medoidThreshold)
-    elif type(medoidTree) == True and medoidThreshold is None:
-        medoidOption = '-medoidTree'
-    else:
-        medoidOption = ''
-    
-    ## Set output file extension
-
-    if gz == True:
-        gzOption = f'-gz -gz-lev {gzLevel}'
-        output+='.aln.gz'
-    else:
-        gzOption = ''
-        output+='.aln'
     
     output_path = Path(output).resolve()
 
-
     famsa_cmd = [
         './FAMSA/famsa',
-        # '-gt',
-        # str(guideTree.value),
-        # '-t',
-        # str(threads),
-        # medoidOption,
-        # gzOption,
+        '-gt',
+        str(guideTree.value),
+        '-t',
+        str(threads),
         str(input_path),
         str(output_path)
     ]
+
+    if medoidTree == True: famsa_cmd[1:1] = ['-medoidtree','-medoid_threshold',str(medoidThreshold)]
+    if gz == True: famsa_cmd[1:1] = ['-gz','-gz-lev',str(gzLevel)]
 
     subprocess.run(famsa_cmd)
 
