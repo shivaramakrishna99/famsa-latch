@@ -10,17 +10,19 @@ from latch import large_task, small_task, workflow
 from latch.types import LatchAuthor, LatchDir, LatchFile, LatchMetadata, LatchParameter
 from enum import Enum
 from typing import Union, Optional, List
+from latch.resources.launch_plan import LaunchPlan
 
 class GuideTree(Enum):
-    sl = 'sl' # Single Linkage Tree
-    upgma = 'upgma' # UPGMA
-    nj = 'nj' # Neighbor Joining Tree
+    sl = 'Single Linkage Tree' # Single Linkage Tree
+    upgma = 'UPGMA' # UPGMA
+    nj = 'Neighbor Joining Tree' # Neighbor Joining Tree
 
 famsa_exports = '''
 GUIDE TREE EXPORTS
 
 export a neighbour joining guide tree to the Newick format
 ./famsa -gt nj -gt_export ./test/adeno_fiber/adeno_fiber nj.dnd
+./famsa -gt upgma -gt_export input.fasta tree.dnd
 
 # export a distance matrix to the CSV format (lower triangular) 
 ./famsa -dist_export ./test/adeno_fiber/adeno_fiber dist.csv
@@ -33,30 +35,45 @@ export a neighbour joining guide tree to the Newick format
 def famsa_alignment(
     input: LatchFile,
     output: str = 'famsa-alignment',
-    guideTree: GuideTree = GuideTree.sl,
-    threads: int = 8,
-    medoidTree: bool = False,
-    medoidThreshold: int = 0,
-    gz: bool = False,
-    gzLevel: int = 7
+    guideTree: Union[GuideTree,LatchFile] = GuideTree.sl,
+    medoidTree: Optional[int] = 0,
+    gzip: bool = False,
     ) -> LatchFile:
 
     input_path = Path(input).resolve()
-        
-    if gz == True: output_path = Path(output+'.gz').resolve()
+    output+='.aln'
+    
+    if gzip: output+='.gz'
+    output_path = Path(output).resolve()
+
+    gtOptions = {
+        'Single Linkage Tree':'sl',
+        'UPGMA':'upgma',
+        'Neighbor Joining Tree':'nj'
+        }
+
+    gtFile=''
+    if isinstance(guideTree, GuideTree):
+        gtValue = str(guideTree.value)
+        for gt in gtOptions.keys():
+            if gt == gtValue:
+                gtValue = gtOptions[gt]
+    else:
+        gtValue = 'import'
+        gtFile = Path(guideTree).resolve()
 
     famsa_cmd = [
         './FAMSA/famsa',
         '-gt',
-        str(guideTree.value),
-        '-t',
-        str(threads),
+        gtValue,
+        str(gtFile),
         str(input_path),
         str(output_path)
     ]
 
-    if medoidTree == True: famsa_cmd[1:1] = ['-medoidtree','-medoid_threshold',str(medoidThreshold)]
-    if gz == True: famsa_cmd[1:1] = ['-gz','-gz-lev',str(gzLevel)]
+    if isinstance(guideTree, GuideTree): famsa_cmd.pop(3)
+    if isinstance(medoidTree, int): famsa_cmd[1:1] = ['-medoidtree','-medoid_threshold',str(medoidTree)]
+    if gzip: famsa_cmd[1:1] = ['-gz','-gz-lev','9']
 
     subprocess.run(famsa_cmd)
 
@@ -78,36 +95,23 @@ metadata = LatchMetadata(
             display_name="Input",
             description="Enter text or FASTA",
         ),
-        "output": LatchParameter(
-            display_name="Output",
-            description="Name output file (without extension)",
-        ),
         "guideTree": LatchParameter(
             display_name="Guide Tree",
-            description="Choose between three guide trees, or upload a custom one in Newick format",
-        ),
-        "threads": LatchParameter(
-            display_name="Number of Threads",
-            description="Choose number of threads required for operation.  Default is 0, means all available threads.",
+            description="Choose between three guide trees",
         ),
         "medoidTree": LatchParameter(
-            display_name="Medoid Tree",
-            description="Enable/disable medoid trees for sets with minimum specified sequences",
+            display_name="Enable medoid trees for sets with minimum specified sequences",
+            description="",
             section_title="Medoid Tree"
         ),
-        "medoidThreshold": LatchParameter(
-            display_name="Medoid Threshold",
-            description="Define a threshold number of sequence for a set on which medoid trees can be used",
-            placeholder='Specify a minimum number of sequences greater than zero'
+        "output": LatchParameter(
+            display_name="Filename",
+            description="Name output file",
+            section_title="Output"
         ),
-        'gz': LatchParameter(
-            display_name="Gzip Output",
+        'gzip': LatchParameter(
+            display_name="Compress File",
             description="Enable gzipped output",
-            section_title="GZip Export"
-        ),
-        'gzLevel': LatchParameter(
-            display_name="Compression Level",
-            description="Set a compression level for gzip between 0 to 9. Default is 7",
         ),
     },
 )
@@ -116,26 +120,20 @@ metadata = LatchMetadata(
 def famsa(
     input: LatchFile,
     output: str = 'famsa-alignment',
-    guideTree: GuideTree = GuideTree.sl,
-    threads: int = 8,
-    medoidTree: bool = False,
-    medoidThreshold: int = 0,
-    gz: bool = False,
-    gzLevel: int = 7,
+    guideTree: Union[GuideTree,LatchFile] = GuideTree.sl,
+    medoidTree: Optional[int] = 0,
+    gzip: bool = False,
     ) -> LatchFile:
-    """FAMSA Short Desc
+    """F
     FAMSA Long Desc
     """
     return famsa_alignment(
     input=input,
     output=output,
     guideTree=guideTree,
-    threads=threads,
     medoidTree=medoidTree,
-    medoidThreshold=medoidThreshold,
-    gz=gz,
-    gzLevel=gzLevel
-    )
+    gzip=gzip
+)
 
 
 """
@@ -143,11 +141,11 @@ Add test data with a LaunchPlan. Provide default values in a dictionary with
 the parameter names as the keys. These default values will be available under
 the 'Test Data' dropdown at console.latch.bio.
 """
-# LaunchPlan(
-#     assemble_and_sort,
-#     "Test Data",
-#     {
-#         "read1": LatchFile("s3://latch-public/init/r1.fastq"),
-#         "read2": LatchFile("s3://latch-public/init/r2.fastq"),
-#     },
-# )
+LaunchPlan(
+    famsa,
+    "Refresh Bio's Data",
+    {
+        "input": LatchFile("s3://latch-public/test-data/3701/FAMSA/test/adeno_fiber/adeno_fiber"),
+        "guideTree": LatchFile("s3://latch-public/test-data/3701/FAMSA/test/adeno_fiber/slink.dnd")
+    },
+)
