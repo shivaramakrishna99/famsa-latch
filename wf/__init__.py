@@ -36,40 +36,47 @@ def famsa_alignment(
     guideTree: GuideTree = GuideTree.sl,
     threads: int = 8,
     medoidTree: bool = False,
-    medoidThreshold: int = 512,
+    medoidThreshold: Optional[int] = None,
     gz: bool = False,
     gzLevel: int = 7
     ) -> LatchFile:
 
-    if type(medoidTree) == True and medoidThreshold is not None:
-        medoidOption = f'-medoidTree {medoidThreshold}'
+    input_path = Path(input).resolve()
+
+    if medoidTree == True and medoidThreshold is not None:
+        medoidOption = '-medoidTree' + '' + str(medoidThreshold)
     elif type(medoidTree) == True and medoidThreshold is None:
-        medoidOption = f'-medoidTree'
+        medoidOption = '-medoidTree'
     else:
-        medoidOption = f''
+        medoidOption = ''
     
+    ## Set output file extension
+
     if gz == True:
         gzOption = f'-gz -gz-lev {gzLevel}'
-        outputExt = f'{output}.aln.gz'
+        output+='.aln.gz'
     else:
         gzOption = ''
-        outputExt = f'{output}.aln'
+        output+='.aln'
+    
+    output_path = Path(output).resolve()
+
 
     famsa_cmd = [
         './FAMSA/famsa',
-        '-gt',
-        guideTree.value,
-        '-t',
-        threads,
-        medoidOption,
-        gzOption,
-        input,
-        outputExt
+        # '-gt',
+        # str(guideTree.value),
+        # '-t',
+        # str(threads),
+        # medoidOption,
+        # gzOption,
+        str(input_path),
+        str(output_path)
     ]
 
     subprocess.run(famsa_cmd)
 
-    return LatchFile(str(outputExt), f"latch:///{outputExt}")
+    return LatchFile(str(output_path), f"latch:///{output_path}")
 
 """The metadata included here will be injected into your interface."""
 
@@ -127,7 +134,7 @@ def famsa(
     guideTree: GuideTree = GuideTree.sl,
     threads: int = 8,
     medoidTree: bool = False,
-    medoidThreshold: int = 512,
+    medoidThreshold: Optional[int] = None,
     gz: bool = False,
     gzLevel: int = 7,
     ) -> LatchFile:
