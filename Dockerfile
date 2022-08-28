@@ -7,7 +7,7 @@ RUN apt-get install -y git
 RUN git clone https://github.com/refresh-bio/FAMSA.git &&\
     cd FAMSA && make
 
-RUN ./FAMSA/famsa -help
+# RUN ./FAMSA/famsa -help
 
 
 # STOP HERE:

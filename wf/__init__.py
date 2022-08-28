@@ -9,12 +9,12 @@ from latch import large_task, small_task, workflow
 # from latch.resources.launch_plan import LaunchPlan
 from latch.types import LatchAuthor, LatchDir, LatchFile, LatchMetadata, LatchParameter
 from enum import Enum
+from typing import Union, Optional, List
 
 class GuideTree(Enum):
     sl = 'sl' # Single Linkage Tree
     upgma = 'upgma' # UPGMA
     nj = 'nj' # Neighbor Joining Tree
-    custom  = 'import' # Custom guide tree
 
 famsa_exports = '''
 GUIDE TREE EXPORTS
@@ -32,7 +32,6 @@ export a neighbour joining guide tree to the Newick format
 @large_task
 def famsa_alignment(
     input: LatchFile,
-    customGuideTree: LatchFile,
     output: LatchFile,
     guideTree: GuideTree = GuideTree.sl,
     threads: int = 8,
@@ -42,9 +41,35 @@ def famsa_alignment(
     gzLevel: int = 7
     ) -> LatchFile:
 
-    bam_file = "hello"
+    if type(medoidTree) == True and medoidThreshold is not None:
+        medoidOption = f'-medoidTree {medoidThreshold}'
+    elif type(medoidTree) == True and medoidThreshold is None:
+        medoidOption = f'-medoidTree'
+    else:
+        medoidOption = f''
+    
+    if gz == True:
+        gzOption = f'-gz -gz-lev {gzLevel}'
+        outputExt = f'{output}.aln.gz'
+    else:
+        gzOption = ''
+        outputExt = f'{output}.aln'
 
-    return LatchFile('/root/{bam_file}', "latch:///covid_sorted.bam")
+    famsa_cmd = [
+        './FAMSA/famsa',
+        '-gt',
+        guideTree.value,
+        '-t',
+        threads,
+        medoidOption,
+        gzOption,
+        input,
+        outputExt
+    ]
+
+    subprocess.run(famsa_cmd)
+
+    return LatchFile(str(outputExt), f"latch:///{outputExt}")
 
 """The metadata included here will be injected into your interface."""
 
@@ -71,46 +96,42 @@ metadata = LatchMetadata(
             description="Choose number of threads required for operation.  Default is 0, means all available threads.",
         ),
         "medoidTree": LatchParameter(
-            display_name="Mediod Tree",
+            display_name="Medoid Tree",
             description="Enable/disable medoid trees for sets with minimum specified sequences",
             section_title="Medoid Tree"
         ),
         "medoidThreshold": LatchParameter(
-            display_name="Mediod Threshold",
-            description="Set number of minimum sequences to use medoid trees",
-            section_title="Medoid Tree"
+            display_name="Medoid Threshold",
+            description="Define a threshold number of sequence for a set on which medoid trees can be used",
         ),
         'gz': LatchParameter(
             display_name="Gzip Output",
             description="Enable gzipped output",
-            section_title="GZip export"
+            section_title="GZip Export"
         ),
         'gzLevel': LatchParameter(
-            display_name="Gzip Compression Level",
+            display_name="Compression Level",
             description="Set a compression level for gzip between 0 to 9. Default is 7",
-            section_title="GZip export"
-        )
+        ),
     },
 )
 
 @workflow(metadata)
 def famsa(
     input: LatchFile,
-    customGuideTree: LatchFile,
     output: LatchFile,
-    guideTree: GuideTree = GuideTree.sl,
+    guideTree: Union[GuideTree, LatchFile] = GuideTree.sl,
     threads: int = 8,
     medoidTree: bool = False,
     medoidThreshold: int = 512,
     gz: bool = False,
-    gzLevel: int = 7,
+    gzLevel: Union[0,1,2,3,4,5] = 7,
     ) -> LatchFile:
     """FAMSA Short Desc
     FAMSA Long Desc
     """
     return famsa_alignment(
     input=input,
-    customGuideTree=customGuideTree,
     output=output,
     guideTree=guideTree,
     threads=threads,
@@ -119,68 +140,6 @@ def famsa(
     gz=gz,
     gzLevel=gzLevel
     )
-
-
-# @large_task
-# def famsa(
-    # input: LatchFile,
-    # customGuideTree: LatchFile,
-    # output: LatchFile,
-    # guideTree: GuideTree = GuideTree.sl,
-    # threads: int = 8,
-    # medoidTree: bool = False,
-    # medoidThreshold = int,
-    # gz: bool = False,
-    # gzLevel: int = 7,
-#     ) -> LatchFile:
-
-#     _famsa_cmd = [
-#         "./FAMSA/famsa",
-#     ]
-#     return LatchFile(f"/root/{output}", f"latch:///{output}.txt")
-
-
-# """The metadata included here will be injected into your interface."""
-# @workflow(metadata)
-# def famsaTask(
-#     input: LatchFile,
-#     customGuideTree: LatchFile,
-#     output: LatchFile,
-#     guideTree: GuideTree = GuideTree.sl,
-#     threads: int = 8,
-#     medoidTree: bool = False,
-#     medoidThreshold = int,
-#     gz: bool = False,
-#     gzLevel: int = 7
-#     ) -> LatchFile:
-#     """Description...
-
-#     markdown header
-#     ----
-
-#     Write some documentation about your workflow in
-#     markdown here:
-
-#     > Regular markdown constructs work as expected.
-
-#     # Heading
-
-#     * content1
-#     * content2
-#     """
-#     return famsa(
-    # input=input,
-    # customGuideTree=customGuideTree,
-    # output=output,
-    # guideTree=guideTree,
-    # threads=threads,
-    # medoidTree=medoidTree,
-    # medoidThreshold=medoidThreshold,
-    # gz=gz,
-    # gzLevel=gzLevel,
-#     )
-
-
 
 
 """
