@@ -36,14 +36,14 @@ def famsa_alignment(
     guideTree: GuideTree = GuideTree.sl,
     threads: int = 8,
     medoidTree: bool = False,
-    medoidThreshold: Optional[int] = None,
+    medoidThreshold: int = 0,
     gz: bool = False,
     gzLevel: int = 7
     ) -> LatchFile:
 
     input_path = Path(input).resolve()
-    
-    output_path = Path(output).resolve()
+        
+    if gz == True: output_path = Path(output+'.gz').resolve()
 
     famsa_cmd = [
         './FAMSA/famsa',
@@ -98,6 +98,7 @@ metadata = LatchMetadata(
         "medoidThreshold": LatchParameter(
             display_name="Medoid Threshold",
             description="Define a threshold number of sequence for a set on which medoid trees can be used",
+            placeholder='Specify a minimum number of sequences greater than zero'
         ),
         'gz': LatchParameter(
             display_name="Gzip Output",
@@ -118,7 +119,7 @@ def famsa(
     guideTree: GuideTree = GuideTree.sl,
     threads: int = 8,
     medoidTree: bool = False,
-    medoidThreshold: Optional[int] = None,
+    medoidThreshold: int = 0,
     gz: bool = False,
     gzLevel: int = 7,
     ) -> LatchFile:
