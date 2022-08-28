@@ -1,0 +1,56 @@
+Step 1/8 : FROM 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base:6839-main
+
+
+ ---> 12b193ffea17
+
+Step 2/8 : RUN apt-get install -y git
+
+
+ ---> Using cache
+
+ ---> 6cbda7170ceb
+
+Step 3/8 : RUN git clone https://github.com/refresh-bio/FAMSA.git &&    cd FAMSA && make
+
+
+ ---> Using cache
+
+ ---> fcff6a2b3b9e
+
+Step 4/8 : RUN python3 -m pip install --upgrade latch
+
+
+ ---> Using cache
+
+ ---> 758084268869
+
+Step 5/8 : COPY wf /root/wf
+
+
+ ---> 9415254d9199
+
+Step 6/8 : ARG tag
+
+
+ ---> Running in d916af657266
+
+ ---> 2567b298c448
+
+Step 7/8 : ENV FLYTE_INTERNAL_IMAGE $tag
+
+
+ ---> Running in bdaf858f8c6e
+
+ ---> e29baac7bcc6
+
+Step 8/8 : WORKDIR /root
+
+
+ ---> Running in 4ce8c6eb6de0
+
+ ---> 68068ce56d12
+
+Successfully built 68068ce56d12
+
+Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/3701_famsa-latch:1.0.0
+

@@ -112,7 +112,7 @@ def famsa(
     gzip: bool = False,
     ) -> LatchFile:
     """A progressive algorithm for large-scale multiple sequence alignments
-# **FAMSA** - Multiple Sequence Alignment
+# **FAMSA -** Multiple Sequence Alignment
 ---
 
 FAMSA (Fast and Accurate Multiple Sequence Alignment of huge protein families) is an algorithm for ultra-scale multiple sequence alignments (3M protein sequences in 5 minutes and 24 GB of RAM).
@@ -142,7 +142,7 @@ The major algorithmic features in FAMSA are:
 - Single-linkage guide trees. While being very accurate, single-linkage trees can be established without storing entire distance matrix, which makes them suitable for large alignments. Although, the alternative guide tree algorithms like UPGMA and neighbour joining are also provided.
 - The new heuristic based on K-Medoid clustering for generating fast guide trees. Medoid trees can be calculated in O(N logN) time and work with all types of subtrees (single linkage, UPGMA, NJ). The heuristic can be enabled with -medoidtree switch and allow aligning millions of sequences in minutes.
 
-## **Results** - How does FAMSA compare to other algorithms?
+## **Results -** How does FAMSA compare to other algorithms?
 
 The analysis was performed on our extHomFam 2 benchmark produced by combining Homstrad (March 2020) references with Pfam 33.1 families (NCBI variant). The data set was deposited at Zenodo: [https://zenodo.org/record/6524237](https://zenodo.org/record/6524237). The following algorithms were investigated:
 
@@ -169,7 +169,11 @@ The most important observations are as follows:
 * FAMSA 2 with medoid trees offered astonishing throughput (a familiy PF00005 of 3 million ABC transporters was aligned in 5 minutes) with accuracy only slightly inferior to that of the default single linkage trees.
 * None of the competing algorithms was able to complete all the families in the largest [250k, 3M) subset.
 * The memory requirements of FAMSA 2 allow ultra-scale analyzes at a desktop computer (24 GB for 3M sequences).
+
 ---
+
+**This documentation is derived from the [source documentation](https://github.com/refresh-bio/FAMSA/blob/master/README.md)**
+
 **This workflow is authored by Shivaramakrishna Srinivasan.**
 **Feel free to reach out to me via [email](mailto:shivaramakrishna.srinivasan@gmail.com) regarding any suggestions/feedback to improve this workflow.**
     """
