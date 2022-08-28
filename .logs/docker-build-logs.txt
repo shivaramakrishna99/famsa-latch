@@ -34,36 +34,36 @@ Step 5/9 : RUN python3 -m pip install --upgrade latch
 Step 6/9 : COPY wf /root/wf
 
 
- ---> 79f1358fa4ab
+ ---> 2751e8838041
 
 Step 7/9 : ARG tag
 
 
  ---> [Warning] The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
 
- ---> Running in eac56581aed7
+ ---> Running in ae4778fe2350
 
- ---> fb9fc041ae39
+ ---> 7bade5a52b5f
 
 Step 8/9 : ENV FLYTE_INTERNAL_IMAGE $tag
 
 
  ---> [Warning] The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
 
- ---> Running in b238edda084d
+ ---> Running in f4d45840a477
 
- ---> 353f266a4818
+ ---> f79f7a9c5a9f
 
 Step 9/9 : WORKDIR /root
 
 
  ---> [Warning] The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
 
- ---> Running in e505cbffd532
+ ---> Running in cfb7eee0b527
 
- ---> 4062bc26441e
+ ---> 5328468346bc
 
-Successfully built 4062bc26441e
+Successfully built 5328468346bc
 
-Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/3701_famsa-latch:0.0.0-ada8f4
+Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/3701_famsa-latch:0.0.0-fcc7b8
 

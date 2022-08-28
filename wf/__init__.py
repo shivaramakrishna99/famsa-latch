@@ -30,7 +30,17 @@ export a neighbour joining guide tree to the Newick format
 '''
 
 @large_task
-def famsa_alignment() -> LatchFile:
+def famsa_alignment(
+    input: LatchFile,
+    customGuideTree: LatchFile,
+    output: LatchFile,
+    guideTree: GuideTree = GuideTree.sl,
+    threads: int = 8,
+    medoidTree: bool = False,
+    medoidThreshold: int = 512,
+    gz: bool = False,
+    gzLevel: int = 7
+    ) -> LatchFile:
 
     bam_file = "hello"
 
@@ -84,36 +94,44 @@ metadata = LatchMetadata(
 )
 
 @workflow(metadata)
-def famsa() -> LatchFile:
-    """Description...
-
-    markdown header
-    ----
-
-    Write some documentation about your workflow in
-    markdown here:
-
-    > Regular markdown constructs work as expected.
-
-    # Heading
-
-    * content1
-    * content2
+def famsa(
+    input: LatchFile,
+    customGuideTree: LatchFile,
+    output: LatchFile,
+    guideTree: GuideTree = GuideTree.sl,
+    threads: int = 8,
+    medoidTree: bool = False,
+    medoidThreshold: int = 512,
+    gz: bool = False,
+    gzLevel: int = 7,
+    ) -> LatchFile:
+    """FAMSA Short Desc
+    FAMSA Long Desc
     """
-    return famsa_alignment()
+    return famsa_alignment(
+    input=input,
+    customGuideTree=customGuideTree,
+    output=output,
+    guideTree=guideTree,
+    threads=threads,
+    medoidTree=medoidTree,
+    medoidThreshold=medoidThreshold,
+    gz=gz,
+    gzLevel=gzLevel
+    )
 
 
 # @large_task
 # def famsa(
-#     input: LatchFile,
-#     customGuideTree: LatchFile,
-#     output: LatchFile,
-#     guideTree: GuideTree = GuideTree.sl,
-#     threads: int = 8,
-#     medoidTree: bool = False,
-#     medoidThreshold = int,
-#     gz: bool = False,
-#     gzLevel: int = 7,
+    # input: LatchFile,
+    # customGuideTree: LatchFile,
+    # output: LatchFile,
+    # guideTree: GuideTree = GuideTree.sl,
+    # threads: int = 8,
+    # medoidTree: bool = False,
+    # medoidThreshold = int,
+    # gz: bool = False,
+    # gzLevel: int = 7,
 #     ) -> LatchFile:
 
 #     _famsa_cmd = [
@@ -151,15 +169,15 @@ def famsa() -> LatchFile:
 #     * content2
 #     """
 #     return famsa(
-#     input=input,
-#     customGuideTree=customGuideTree,
-#     output=output,
-#     guideTree=guideTree,
-#     threads=threads,
-#     medoidTree=medoidTree,
-#     medoidThreshold=medoidThreshold,
-#     gz=gz,
-#     gzLevel=gzLevel,
+    # input=input,
+    # customGuideTree=customGuideTree,
+    # output=output,
+    # guideTree=guideTree,
+    # threads=threads,
+    # medoidTree=medoidTree,
+    # medoidThreshold=medoidThreshold,
+    # gz=gz,
+    # gzLevel=gzLevel,
 #     )
 
 
