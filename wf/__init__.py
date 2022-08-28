@@ -32,7 +32,7 @@ export a neighbour joining guide tree to the Newick format
 @large_task
 def famsa_alignment(
     input: LatchFile,
-    output: LatchFile,
+    output: str = 'famsa-alignment',
     guideTree: GuideTree = GuideTree.sl,
     threads: int = 8,
     medoidTree: bool = False,
@@ -87,6 +87,10 @@ metadata = LatchMetadata(
             display_name="Input",
             description="Enter text or FASTA",
         ),
+        "output": LatchParameter(
+            display_name="Output",
+            description="Name output file (without extension)",
+        ),
         "guideTree": LatchParameter(
             display_name="Guide Tree",
             description="Choose between three guide trees, or upload a custom one in Newick format",
@@ -119,13 +123,13 @@ metadata = LatchMetadata(
 @workflow(metadata)
 def famsa(
     input: LatchFile,
-    output: LatchFile,
-    guideTree: Union[GuideTree, LatchFile] = GuideTree.sl,
+    output: str = 'famsa-alignment',
+    guideTree: GuideTree = GuideTree.sl,
     threads: int = 8,
     medoidTree: bool = False,
     medoidThreshold: int = 512,
     gz: bool = False,
-    gzLevel: Union[0,1,2,3,4,5] = 7,
+    gzLevel: int = 7,
     ) -> LatchFile:
     """FAMSA Short Desc
     FAMSA Long Desc

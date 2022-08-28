@@ -1,69 +1,56 @@
-Step 1/9 : FROM 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base:6839-main
+Step 1/8 : FROM 812206152185.dkr.ecr.us-west-2.amazonaws.com/latch-base:6839-main
 
 
  ---> 12b193ffea17
 
-Step 2/9 : RUN apt-get install -y git
+Step 2/8 : RUN apt-get install -y git
 
 
  ---> Using cache
 
- ---> 47b79cddb814
+ ---> 6cbda7170ceb
 
-Step 3/9 : RUN git clone https://github.com/refresh-bio/FAMSA.git &&    cd FAMSA && make
-
-
- ---> Using cache
-
- ---> 0f191d492f89
-
-Step 4/9 : RUN ./FAMSA/famsa -help
+Step 3/8 : RUN git clone https://github.com/refresh-bio/FAMSA.git &&    cd FAMSA && make
 
 
  ---> Using cache
 
- ---> b1fad4be12c1
+ ---> fcff6a2b3b9e
 
-Step 5/9 : RUN python3 -m pip install --upgrade latch
+Step 4/8 : RUN python3 -m pip install --upgrade latch
 
 
  ---> Using cache
 
- ---> 400306b57905
+ ---> 758084268869
 
-Step 6/9 : COPY wf /root/wf
-
-
- ---> 2751e8838041
-
-Step 7/9 : ARG tag
+Step 5/8 : COPY wf /root/wf
 
 
- ---> [Warning] The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+ ---> 0a925da0233e
 
- ---> Running in ae4778fe2350
-
- ---> 7bade5a52b5f
-
-Step 8/9 : ENV FLYTE_INTERNAL_IMAGE $tag
+Step 6/8 : ARG tag
 
 
- ---> [Warning] The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+ ---> Running in 50308c3e387c
 
- ---> Running in f4d45840a477
+ ---> 77d6afd2103e
 
- ---> f79f7a9c5a9f
-
-Step 9/9 : WORKDIR /root
+Step 7/8 : ENV FLYTE_INTERNAL_IMAGE $tag
 
 
- ---> [Warning] The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+ ---> Running in 7c23d7d705b6
 
- ---> Running in cfb7eee0b527
+ ---> 92cd195a00bf
 
- ---> 5328468346bc
+Step 8/8 : WORKDIR /root
 
-Successfully built 5328468346bc
 
-Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/3701_famsa-latch:0.0.0-fcc7b8
+ ---> Running in 5dbc98d8fe51
+
+ ---> 5a1a8f4cd813
+
+Successfully built 5a1a8f4cd813
+
+Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/3701_famsa-latch:0.0.2
 
