@@ -1,4 +1,4 @@
-**FAMSA -** Multiple Sequence Alignment| [LatchBio](https://console.latch.bio/)
+**FAMSA -** Multiple Sequence Alignment | [LatchBio](https://console.latch.bio/)
 ---
 
 [Workflow Page](https://console.latch.bio/explore/67301/info) | [Paper](https://www.nature.com/articles/srep33964) | [Source Documentation](https://github.com/refresh-bio/FAMSA/blob/master/README.md)
