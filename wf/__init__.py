@@ -115,6 +115,8 @@ def famsa(
 # **FAMSA -** Multiple Sequence Alignment
 ---
 
+[GitHub Repository](https://github.com/shivaramakrishna99/famsa-latch) | [Paper](https://www.nature.com/articles/srep33964) | [Source Documentation](https://github.com/refresh-bio/FAMSA/blob/master/README.md)
+
 FAMSA (Fast and Accurate Multiple Sequence Alignment of huge protein families) is an algorithm for ultra-scale multiple sequence alignments (3M protein sequences in 5 minutes and 24 GB of RAM).
 
 ## **How to Use**
@@ -169,6 +171,11 @@ The most important observations are as follows:
 * FAMSA 2 with medoid trees offered astonishing throughput (a familiy PF00005 of 3 million ABC transporters was aligned in 5 minutes) with accuracy only slightly inferior to that of the default single linkage trees.
 * None of the competing algorithms was able to complete all the families in the largest [250k, 3M) subset.
 * The memory requirements of FAMSA 2 allow ultra-scale analyzes at a desktop computer (24 GB for 3M sequences).
+
+## **Citation**
+
+[Deorowicz, S., Debudaj-Grabysz, A., Gudyś, A. (2016) FAMSA: Fast and accurate multiple sequence alignment of huge protein families. 
+Scientific Reports, 6, 33964](https://www.nature.com/articles/srep33964)
 
 ---
 
