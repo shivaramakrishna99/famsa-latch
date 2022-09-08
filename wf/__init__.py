@@ -27,10 +27,9 @@ def famsa_alignment(
     ) -> LatchFile:
 
     input_path = Path(input).resolve()
-    output+='.aln'
     
+    output+='.aln'
     if gzip: output+='.gz'
-    output_path = Path(output).resolve()
 
     gtOptions = {
         'Single Linkage Tree':'sl',
@@ -54,7 +53,7 @@ def famsa_alignment(
         gtValue,
         str(gtFile),
         str(input_path),
-        str(output_path)
+        str(output)
     ]
 
     if isinstance(guideTree, GuideTree): famsa_cmd.pop(3)
@@ -63,7 +62,7 @@ def famsa_alignment(
 
     subprocess.run(famsa_cmd)
 
-    return LatchFile(str(output_path), f"latch:///{output_path}")
+    return LatchFile(str(output), f"latch:///FAMSA-MSA/{output}")
 
 """The metadata included here will be injected into your interface."""
 
