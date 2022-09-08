@@ -1,5 +1,5 @@
 """
-Assemble and sort some COVID reads...
+Perform multiple sequence aligment using the FAMSA algorithm...
 """
 
 import subprocess
