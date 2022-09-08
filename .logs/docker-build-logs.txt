@@ -27,30 +27,30 @@ Step 4/8 : RUN python3 -m pip install --upgrade latch
 Step 5/8 : COPY wf /root/wf
 
 
- ---> 9415254d9199
+ ---> dbb87f4ca018
 
 Step 6/8 : ARG tag
 
 
- ---> Running in d916af657266
+ ---> Running in 109b65596485
 
- ---> 2567b298c448
+ ---> 195ec456b11e
 
 Step 7/8 : ENV FLYTE_INTERNAL_IMAGE $tag
 
 
- ---> Running in bdaf858f8c6e
+ ---> Running in 07e1fb8f54b0
 
- ---> e29baac7bcc6
+ ---> 490f545e06bb
 
 Step 8/8 : WORKDIR /root
 
 
- ---> Running in 4ce8c6eb6de0
+ ---> Running in 5a9eeea54030
 
- ---> 68068ce56d12
+ ---> 48d4e02303b5
 
-Successfully built 68068ce56d12
+Successfully built 48d4e02303b5
 
-Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/3701_famsa-latch:1.0.0
+Successfully tagged 812206152185.dkr.ecr.us-west-2.amazonaws.com/3701_famsa-latch:2.0.0
 
